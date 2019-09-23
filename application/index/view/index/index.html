@@ -1,0 +1,23 @@
+{extend name="public:base" /}
+{block name="body"}
+{$list->render()|raw}
+          <div class="row">
+              <div class ="col-md-8">
+                     <div class="page-header"><h2>{$catname|default="所有内容"}</h2></div>
+                  {volist name="list" id="v"}
+                  <img src="/uploads/{$v.title_img}" class="img-rounded" style="float:left;margin-right:40px;width:80px;height: 80px"/>
+                  <div style="float:left;">
+
+                      <h4>{$v.title}</h4>
+                      <p >发布人：{$v.hasoneuser.name}&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 发布时间：{$v.create_time}</p>
+                      <div style="width:700px">{$v.content|checkConten }   {//用字定义函数截取过滤字符}</div>
+                      <hr>
+                  </div>
+                      {/volist}
+
+                  {//$pages}
+                  </div>
+
+
+
+{/block}

@@ -6,7 +6,10 @@
  */
 
 namespace app\common\controller;
-use think\controller;
+use think\Controller;
+use think\db\Query;
+use think\facade\Session;
+use app\common\model\ArtCate;
 
 class Base extends Controller
 {
@@ -17,6 +20,32 @@ class Base extends Controller
 
 */
     protected function initialize(){
-
+        $this->shownav();
     }
+    // 重复登陆检测
+    protected function logined()
+    {
+        if (Session::has('user_id')) {
+            $this->error('您已经登陆了');
+        }
+    }
+    //检查是否登陆
+        protected function islogin()
+        {
+            if (!Session::has('user_id')) {
+                $this->error('请登录后发布');
+            }
+        }
+        protected function shownav(){
+                //获取分类导航
+               $res= ArtCate::all(function($query){
+                   $query->where('status',1)->order('sort','asc');
+               });
+               //将分类信息赋值给模板
+            $this->view->assign('cateList',$res);
+
+            }
+
+
+
 }
