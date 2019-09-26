@@ -8,8 +8,8 @@
                   <img src="/uploads/{$v.title_img}" class="img-rounded" style="float:left;margin-right:40px;width:80px;height: 80px"/>
                   <div style="float:left;">
 
-                      <h4>{$v.title}</h4>
-                      <p >发布人：{$v.hasoneuser.name}&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 发布时间：{$v.create_time}</p>
+                      <h4><a href="{:url('detail',['id'=>$v.id])}" >{$v.title}</a></h4>
+                      <p >发布人：{$v.hasoneuser.name}&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 发布时间：{$v.create_time} &nbsp; &nbsp;阅读量:{$v.pv}</p>
                       <div style="width:700px">{$v.content|checkConten }   {//用字定义函数截取过滤字符}</div>
                       <hr>
                   </div>

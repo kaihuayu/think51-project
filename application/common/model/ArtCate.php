@@ -21,4 +21,7 @@ class ArtCate extends Model
     protected  $insert =['create_time','status'=>1,'is_top=>0','is_host'=>0];
     //仅更新是设置
     protected  $update =['update_time'];
+    public function user(){
+        return $this->hasOne('app\common\model\ArtCate','id','user_id');  //user 方法查询id 关联的上级user_id；
+    }
 }

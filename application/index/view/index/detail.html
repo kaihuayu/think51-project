@@ -1,0 +1,80 @@
+{extend name="public:base" /}
+{block name="body"}
+
+<div class="row">
+    <div class ="col-md-8">
+        <div class="page-header"><h2>{$catename}</h2></div>
+
+
+        <div style="float:left;">
+
+            <h4><a href="" >{$title}</a></h4>
+            <p >发布人：{$user}&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 发布时间：{$create_time} &nbsp; &nbsp;阅读量:{$pv}</p>
+            <div style="width:700px">{$content }   {//用字定义函数截取过滤字符}</div>
+            <hr>
+            <button class=" btn-defaule" type="button" id="fav" user_id="{$art.user_id}" article_id="{$art.id}"
+             session_id="{$Think.session.user_id}"
+            >收藏</button>
+        </div>
+
+
+
+    </div>
+<script>
+   $(function() {
+
+       {empty name="$art.userfav.user_id"} //判断user_id 是否为空
+       var  fuid= null;
+       {/empty}
+       if (!null==fuid){
+           $('#fav').text('已收藏');
+       }
+
+       $('#fav').on('click',function()
+        {
+            var userId =$(this).attr('user_id');
+            var artId =$(this).attr('article_id');
+            var sessionId =$(this).attr('session_id');
+            if (userId && artId) {
+                $.ajax({
+                    type: 'get',
+                    url: "{:url('index/favorite')}",
+                    data: {'userId':userId,
+                        'artId':artId,
+                        'sessionid':sessionId,
+                        time:new Date().getTime(), //加上随机时间防止缓存问题
+
+                    },
+                    datatype: 'json',
+                    success: function (res) {
+                        if (res.status ==1) {
+                            $('#fav').attr('class','but-success');
+                            $('#fav').text(res.message);
+
+                            //alert(res.message);
+                        }
+                        if (res.status ==0)
+                        {
+                            $('#fav').attr('class','but-default');
+                            $('#fav').text(res.message);
+
+                        }
+                        if (res.status ==-1)
+                        {
+                            alert(res.message);
+
+                        }
+                        if (res.status ==2)
+                        {
+                            alert(res.message);
+
+                        }
+                    }
+
+                })
+            }
+        })
+    })
+</script>
+
+    {/block}

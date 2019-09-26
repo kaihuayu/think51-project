@@ -1,0 +1,32 @@
+{layout name="public:layout" /}
+<h4 class="text-center text-success">用户列表</h4>
+
+<table class="table  table-hover table-center">
+    <tr>
+        <td>姓名</td>
+        <td>手机</td>
+        <td>email</td>
+        <td>状态</td>
+        <td>是否管理员</td>
+    </tr>
+    {volist name="list" id="v"}
+     <tr>
+          <td>{$v.name}</td>
+         <td>{$v.mobile}</td>
+         <td>{$v.email}</td>
+         <td>{if $v.status==1}
+                 正常
+                {else}
+                禁用
+             {/if}
+         </td>
+         <td>
+             {if $v.is_admin==0}
+             普通用户
+             {else}
+             管理员
+             {/if}
+         </td>
+     </tr>
+    {/volist}
+</table>

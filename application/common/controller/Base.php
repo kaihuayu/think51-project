@@ -33,7 +33,7 @@ class Base extends Controller
         protected function islogin()
         {
             if (!Session::has('user_id')) {
-                $this->error('请登录后发布');
+                $this->error('请登录');
             }
         }
         protected function shownav(){

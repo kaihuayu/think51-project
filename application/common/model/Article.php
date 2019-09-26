@@ -22,8 +22,14 @@ class Article  extends  Model
 
     public function hasoneuser(){
        // return $this->belongsTo('User','id','user_id');
-        return $this->hasOne('app\common\model\User','id','user_id');
+        return $this->hasOne('app\common\model\User','id','user_id');  //userid 关联查询user表中的name
+    }
+    public function hartcate(){
+        return $this->hasOne('app\common\model\ArtCate','id','cate_id');  //栏目ID 关联查询artcate表中的栏目名称
     }
 
+    public function userfav(){
+        return $this->hasOne('app\common\model\UserFav','art_id','id'); // 关联查询 文章是否在 userfav 表中收藏
+    }
 
 }
