@@ -1,0 +1,35 @@
+{layout name="public:layout"}
+<h4 class="text-success text-center">分类管理</h4>
+<table class="table-hover table-bordered  table  table-head table-danger text-center">
+    <tr class="info">
+        <td>添加人</td>
+        <td>栏目名</td>
+        <td>排序</td>
+        <td>状态</td>
+        <td>添加时间</td>
+        <td colspan="2">操作</td>
+    </tr>
+    {volist name="catlist" id="v"}
+    <tr>
+        <td>{$v.user_id}</td>
+        <td>{$v.name}</td>
+        <td>{$v.sort}</td>
+        <td>{if $v.status==1}
+        启用
+            {else}
+            禁用
+            {/if}
+        </td>
+        <td>{$v.create_time}</td>
+        <td><a href="{:url('cate/cateEdit',['id'=>$v.id])}">编辑</a></td>
+        <td><a href="" onclick="del({$v.id}); return false">删除</a></td>
+    </tr>
+    {/volist}
+</table>
+<script>
+    function  del(id) {
+               if( confirm("你确定要删除此栏目吗")==true){
+                   window.location.href="{:url('cate/cateDel')}?id="+id;
+               }
+    }
+</script>
