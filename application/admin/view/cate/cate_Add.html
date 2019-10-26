@@ -1,0 +1,26 @@
+{layout name="public:layout" /}
+<h4 class="text-center text-success">添加分类</h4>
+<form method ="post" id="edit" action="{:url('cate/cateAdd')}">
+
+    <div class="form-group">
+        <label for="name">栏目名称</label>
+        <input type="text" class="form-control" id="name" placeholder="输入栏目名称" name="name" value="">
+    </div>
+    <div class="form-group">
+        <label for="sort">栏目排序</label>
+        <input type="text" class="form-control" id="sort" placeholder="排序" name="sort" value="">
+    </div>
+
+    <div class="form-group">
+        <label for="status">栏目状态</label>
+        <select type="text" name="status" id="status" class="form-control">
+            <option value="1">显示</option>
+            <option value="0">隐藏</option>
+
+        </select>
+    </div>
+    <!--隐藏域 传递用户ID-->
+    <input type="hidden" id="user_id"  name="user_id" value="{$Think.session.admin_id}" >
+
+    <button type="" class="rebtn btn-default">保存</button>
+</form>

@@ -1,0 +1,27 @@
+{layout name="public:layout" /}
+<h4 class="text-center text-success">编辑分类</h4>
+<form method ="post" id="edit" action="{:url('cate/cateSave')}">
+
+    <div class="form-group">
+        <label for="name">栏目名称</label>
+        <input type="text" class="form-control" id="name" placeholder="栏目名称" name="name" value="{$res.name}">
+    </div>
+    <div class="form-group">
+        <label for="sort">栏目排序</label>
+        <input type="text" class="form-control" id="sort" placeholder="排序" name="sort" value="{$res.sort}">
+    </div>
+
+    <div class="form-group">
+        <label for="status">栏目状态</label>
+        <label class="radio-inline">
+        <input type="radio" name="status"  id = "status" value="1" {if $res.status==1} checked {/if} >
+            显示</label>
+        <label class="radio-inline">
+            <input type="radio" name="status" value="0" {if $res.status==0} checked {/if} >
+            隐藏
+        </label>
+    </div>
+    <!--隐藏域 传递用户ID-->
+    <input type="hidden" id="id"  name="id" value="{$res.id}" >
+    <button type="" class="rebtn btn-default">保存</button>
+</form>

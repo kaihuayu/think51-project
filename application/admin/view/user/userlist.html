@@ -1,32 +1,47 @@
 {layout name="public:layout" /}
 <h4 class="text-center text-success">用户列表</h4>
-
-<table class="table  table-hover table-center">
+<table class="table  table-hover table-center table-default">
     <tr>
         <td>姓名</td>
         <td>手机</td>
         <td>email</td>
         <td>状态</td>
         <td>是否管理员</td>
+        <td colspan="2">操作</td>
     </tr>
-    {volist name="list" id="v"}
-     <tr>
-          <td>{$v.name}</td>
-         <td>{$v.mobile}</td>
-         <td>{$v.email}</td>
-         <td>{if $v.status==1}
-                 正常
-                {else}
-                禁用
-             {/if}
-         </td>
-         <td>
-             {if $v.is_admin==0}
-             普通用户
-             {else}
-             管理员
-             {/if}
-         </td>
-     </tr>
+    {volist name="list" id="v" empty="$empty"   //如果没有数据 输出empty 变量}
+    <tr>
+        <td>{$v.name}</td>
+        <td>{$v.mobile}</td>
+        <td>{$v.email}</td>
+        <td>{if $v.status==1}
+            正常
+            {else}
+            禁用
+            {/if}
+        </td>
+        <td>
+            {if $v.is_admin==0}
+            普通用户
+            {else}
+            管理员
+            {/if}
+        </td>
+       <!--根据ID判断用户，是否可以编辑，用户不能删除自己-->
+        {eq name="$v.id" value="$Think.session.admin_id"}
+        <td><a href="{:url('user/useredit')}?id={$v.id}" >编辑</a></td>
+        {/eq}
+        {neq name="$v.id" value="$Think.session.admin_id"}
+        <td> <a href ="javascript:" onclick="del({$v.id})">删除</a></td>
+        {/neq}
+    </tr>
     {/volist}
 </table>
+<script>
+    function del(id) {
+        if (confirm('你是真的要删除'+id+'吗？')==true){
+            window.location.href="{:url('user/doDelete')}?id="+id
+        }
+
+    }
+</script>

@@ -6,6 +6,7 @@ use app\admin\common\controller\Base;
 use app\admin\common\model\User as UserModel;
 use think\facade\Request;
 use think\facade\Session;
+use think\Db;
 
 
 
@@ -20,10 +21,10 @@ class User extends Base
     }
   public  function checkLogin(){
         $data = Request::param();
-        $map[] = ["email",'=',$data['user']];
+        $map[] = ['name','=',$data['user']];
         $map[] =['password','=',sha1($data['password'])];
         $res=UserModel::where($map)->find();
-        dump($res);
+        //dump($map);
         if($res){
             Session::set('admin_id',$res['id']);
             Session::set('admin_name',$res['name']);
@@ -38,9 +39,11 @@ class User extends Base
         $this->success('退出成功',url('user/login'));
   }
   public  function userlist(){
+        //获取用的的id 和 级别
         $data['admin_id']=Session::get('admin_id');
         $data['admin_level'] =  Session::get('admin_level');
         $res= UserModel::where('id',$data['admin_id'])->find();
+        //如果是超级管理员获取全部数据
         if ($res['is_admin']==1){
             $list=UserModel::all();
             $this->view->assign('list',$list);
@@ -52,4 +55,50 @@ class User extends Base
 
        return $this->fetch();
   }
+
+  public function userEdit(){
+        //1.获取用户ID
+      $id=Request::param('id');
+       //2.根据ID 查询用户
+      $res=UserModel::get($id);
+      //3.设置模板变量
+      $this->view->assign('res',$res);
+    //  dump($res); 渲染模板
+      return $this->fetch();
+  }
+
+  public function usersave(){
+        //1.获取所有数据
+        $data =Request::param();
+        //保存主键id
+        $id =$data['id'];
+        //删除id
+         unset($data['id']);
+         unset($data['password-confirm']);
+
+        //检查密码是否为空
+      if (empty($data['password'])){
+          //密码为空不修改删除
+          unset($data['password']);
+
+        $rs= UserModel::where('id',$id)->update($data);
+        if($rs){
+           return $this->success('更新成功','userlist');
+        }
+      }else{
+          $data['password']=sha1($data['password']);
+          $rs= UserModel::where('id',$id)->update($data);
+        return  $this->success('更新成功','userlist');
+      }
+        return $this->error('修改失败');
+  }
+
+  public function doDelete(){
+        $id= Request::param('id');
+      if(  UserModel::where('id',$id)->delete()){
+          return $this->success('删除成功','userlist');
+      };
+      return $this->error('删除失败','userlist');
+  }
+
 }
