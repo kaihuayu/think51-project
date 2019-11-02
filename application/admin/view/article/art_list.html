@@ -1,0 +1,37 @@
+{layout name="public:layout"}
+<h4 class="text-success text-center">{$title}</h4>
+<table class="table-hover table-bordered  table  table-head table-danger text-center">
+    <tr class="info">
+        <td>ID</td>
+        <td>文章标题</td>
+        {eq name="$Think.session.admin_level" value= "1"}
+        <td>添加人</td>
+        {/eq}
+        <td>栏目名</td>
+        <td>阅读量</td>
+        <td>添加时间</td>
+        <td colspan="2">操作</td>
+    </tr>
+    {volist name="artList" id="v"}
+    <tr>
+        <td>{$v.id}</td>
+        <td>{$v.title}</td>
+        <td>{$v.cate_id}</td>
+        {eq name="$Think.session.admin_level" value= "1"}
+        <td>{$v.user_id}</td>
+        {/eq}
+        <td>{$v.pv}</td>
+        <td>{$v.create_time}</td>
+        <td><a href="{:url('article/artEdit',['id'=>$v.id])}">编辑</a></td>
+        <td><a href="" onclick="del({$v.id}); return false">删除</a></td>
+    </tr>
+    {/volist}
+</table>
+<div>{$artList|raw}</div>
+<script>
+    function  del(id) {
+        if( confirm("你确定要删除此栏目吗")==true){
+            window.location.href="{:url('article/artDel')}?id="+id;
+        }
+    }
+</script>
