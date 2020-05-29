@@ -89,7 +89,7 @@ class Article extends Base
                 //$Article = new Article();
                 $res=ArtModel::update($data);
                 if($res){
-                    $this->success('文章更新成功',url('/admin/article'));
+                    $this->success('文章更新成功',url('/admin/artlist'));
                 }else{
                     $this->error('发布失败',url('/admin/article'));
                 }
@@ -101,8 +101,20 @@ class Article extends Base
         };
     }
 
-    public function del(){
+    public function artDel(){
+        //获取文章id
+        $id=Request::get("id");
+        // echo $id;
+        $id=Request::param('id');
+        // echo $id2;
+        //$res=ArtModel::where('id',$id);
+        $res=ArtModel::destroy($id);
+        if($res){
+            $this->success("删除成功",url('artList'));
+        }else{
 
+            $this->error("删除失败");
+        }
     }
 
 
