@@ -1,0 +1,48 @@
+{layout name="public:layout" /}
+<h4 class="text-center text-success">编辑文章</h4>
+<div class="container">
+    <div class="row" class="my_from">
+        <div class ="col-md-8">
+            <div class="page-header"><h2>编辑文章</h2></div>
+            <form method ="post" id="login" action ="{:url('admin/article/save')}" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="exampleInputtitle1">文章标题</label>
+                    <input type="text" class="form-control" id="exampleInputtitle1" placeholder="文章标题" name="title" value="{$res.title}">
+                    <input type="hidden" name="id" value="{$res.id}">
+                    <input type="hidden" name="user_id" value="{$Think.session.user_id}">
+                </div>
+
+                <div class="form-group">
+                    <label for="catetegory">文章分类</label>
+                    <select type="text" class="form-control" id="catetegory" placeholder="文章分类" name="cate_id">
+                        {volist name ="catelist" id="cate"}
+                        <option value="{$cate.id}">{$cate.name}</option>
+                        {/volist}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="contentid">文章类容</label>
+
+                    <textarea class="form-control" rows="8" placeholder="文章内容" name="content" id="contentid" >{$res.content} </textarea>
+                </div>
+                <div class="form-group">
+                    <label for="title_img"> <img src="/uploads/{$res.title_img}" /> </label>
+                    <input type="file" id="title_img" name="title_img" placeholder="上传图片">
+
+                </div>
+
+                <button type="submit" class="btn-default">发布文章</button>
+            </form>
+        </div>
+        <script src="/static/js/nicEdit.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            //引入 nicEditor富文本编辑器
+            bkLib.onDomLoaded(function() {
+                // new nicEditor().panelInstance('area1');
+                //   new nicEditor({fullPanel : true}).panelInstance('area2');
+                new nicEditor({iconsPath : '/static/js/nicEditorIcons.gif'}).panelInstance('contentid');
+                //   new nicEditor({buttonList : ['fontSize','bold','italic','underline','strikeThrough','subscript','superscript','html','image']}).panelInstance('area4');
+                //  new nicEditor({maxHeight : 100}).panelInstance('area5');
+            });
+        </script>
