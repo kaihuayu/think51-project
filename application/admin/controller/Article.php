@@ -74,22 +74,29 @@ class Article extends Base
                 echo '<script>alert("'.$res.'");history.go(-1);</script>';
 
             }else{
+
                 //验证成功写入数据库
                 //获取图片信息
-                $file=Request::file('title_img');
-                //validate 方法检查文件是否合格，move方法上传到uploads 目录$info保存上传的目录信息
-                $info=$file->validate(['ext'=>'jpg,jpeg,png,gif','size'=>150000])->move('uploads');
-                //判断是否上传成功
-                if($info){
-                    $data['title_img'] = $info->getSaveName(); //写人文件保存信息
-                }else{
-                    $this->error($file->getError());
+               // $file=Request::file('title_img');
+
+               // $file="";
+
+                if($_FILES['title_img']['name']<>"") {  //判断是否有文件上传
+                    $file = request()->file('title_img');
+                    //validate 方法检查文件是否合格，move方法上传到uploads 目录$info保存上传的目录信息
+                    $info = $file->validate(['ext' => 'jpg,jpeg,png,gif', 'size' => 150000])->move('uploads');
+                    //判断是否上传成功
+                        if ($info) {
+                            $data['title_img'] = $info->getSaveName(); //写人文件保存信息
+                        } else {
+                            $this->error($file->getError());
+                        }
                 }
                 //数据写入数据库
                 //$Article = new Article();
                 $res=ArtModel::update($data);
                 if($res){
-                    $this->success('文章更新成功',url('/admin/artlist'));
+                    $this->success('文章更新成功',url('/admin/article/artlist'));
                 }else{
                     $this->error('发布失败',url('/admin/article'));
                 }

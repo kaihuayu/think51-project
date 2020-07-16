@@ -51,7 +51,7 @@ class User extends Base
             $this->view->assign('list',$res);
         }
       // dump($res);
-          $this->view->assign('empty','<span style="color:red">无数据<span>');
+          $this->view->assign('empty', '<span style="color:#ff0000">无数据<span>');
 
        return $this->fetch();
   }
