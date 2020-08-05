@@ -4,6 +4,7 @@ namespace app\index\controller;
 use app\common\controller\Base;
 use app\common\model\ArtCate;
 use app\common\model\Article;
+use app\common\model\conmmentsl;
 //use think\Request;
 use think\facade\Request;
 use think\Db;
@@ -156,6 +157,16 @@ class Index extends Base
                ->where('id',$artId)
                 ->find();
             $res->setInc('pv'); //每打开一次 就给PV阅读量+1
+
+
+            $this->view->assign('conmmentsl',conmmentsl::select(function($query) use($artId){
+
+                    $query->where('status',1)->where('art_id',$artId)->order('create_time','desc');
+
+            }));
+
+
+
             $this->view->assign('title',$res['title']);
             $this->view->assign('content',$res['content']);
             $this->view->assign('pv',$res['pv']);
@@ -193,6 +204,24 @@ class Index extends Base
         }else{
             Db::table('zh_user_fav')->where($map)->delete();
           return  ['status'=>0,'message'=>'未收藏'];
+        }
+    }
+
+    public function conmmentsl(){
+        if(!Request::isAjax()){
+            return ['status'=>-1,'message'=>'请求错误'];
+        }else{
+            $data = Request::param();
+
+            $res=conmmentsl::create($data);
+            if($res){
+                return ['status'=>1,'message'=>'发布成功'];
+
+            }else{
+                return ['status'=>0,'message'=>'发布失败'];
+            }
+
+
         }
     }
 }
