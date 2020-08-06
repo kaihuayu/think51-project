@@ -5,13 +5,12 @@
     </form>
     <div class="page-header"><h2>热门内容</h2></div>
     <div class="list-group">
-        <a href="#" class="list-group-item active">
-            最新最热内容
-        </a>
-        <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
-        <a href="#" class="list-group-item">Morbi leo risus</a>
-        <a href="#" class="list-group-item">Porta ac consectetur ac</a>
-        <a href="#" class="list-group-item">Vestibulum at eros</a>
+
+        {volist name="hotartlist" id='art'}
+        <a href="#" class="list-group-item
+         {eq name="$i" value="1"}active{/eq}
+        " >{$art.title}<span class="badge">{$art.pv}</span></a>
+        {/volist}
     </div>
 </div>
 </div>

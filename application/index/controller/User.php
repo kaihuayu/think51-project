@@ -13,6 +13,8 @@ use app\common\model\User as UserModel ;
 class User extends Base
 {
     public function register(){
+
+        $this->IsReg();
         $this->assign('title',"注册");
 
       return $this->fetch();

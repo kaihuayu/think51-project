@@ -20,6 +20,12 @@ if (!function_exists('checkConten')) {
 }
 
 if (!function_exists('getCatname')){
+    function getCatname($id){
 
+        $res=app\common\model\User::where('id',$id)->value('name');
+        if($res){
+            return $res;
+        }
+    }
 
 }

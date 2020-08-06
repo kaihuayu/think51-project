@@ -10,7 +10,9 @@ use think\Controller;
 use think\db\Query;
 use think\facade\Session;
 use app\common\model\ArtCate;
-
+use app\common\model\Article;
+use app\common\model\Site;
+use think\facade\Request;
 class Base extends Controller
 {
     /*
@@ -21,6 +23,8 @@ class Base extends Controller
 */
     protected function initialize(){
         $this->shownav();
+        $this->IsOpen();
+        $this->HotArtList();
     }
     // 重复登陆检测
     protected function logined()
@@ -36,6 +40,7 @@ class Base extends Controller
                 $this->error('请登录');
             }
         }
+        //显示分类导航
         protected function shownav(){
                 //获取分类导航
                $res= ArtCate::all(function($query){
@@ -45,6 +50,38 @@ class Base extends Controller
             $this->view->assign('cateList',$res);
 
             }
+   //检测站点是否关闭
+     public function IsOpen(){
+        //获取站点是否关闭
+       $isopen= Site::where('status',1)->value("is_open");
+
+       //如果已经关闭，就关闭前台，后台开启 Request::module() 检测前台模块
+         if($isopen==0 && Request::module()=="index"){
+
+             $info="<body STYLE=background-color:#2d2d2a;text-align:center;><h1 style='color: #fff;font-weight: bold;margin-top:10%'>网站维护中</h1></body>";
+             exit($info);
+         }
+
+     }
+
+     //检测是否允许注册
+    public function IsReg(){
+        //获取注册状态
+        $isreg = Site::where('status',1)->value("is_reg");
+        //根据状态 跳转
+        if($isreg==0){
+
+            $this->error("关闭注册中",url('/index/index'));
+
+        }
+
+    }
+
+    //热门文章列表
+    public function HotArtList(){
+        $hotartlist = Article::where('status',1)->order('pv','desc')->limit(12)->select();
+        $this->view->assign('hotartlist',$hotartlist);
+    }
 
 
 

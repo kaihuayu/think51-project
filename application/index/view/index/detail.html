@@ -15,16 +15,54 @@
             <button class=" btn-defaule" type="button" id="fav" user_id="{$art.user_id}" article_id="{$art.id}"
              session_id="{$Think.session.user_id}"
             >收藏</button>
+
+            <h4>留言区</h4>
+            <form class="commentsl" id="ly">
+                <div class="form-group">
+                <input name="user_id" type="hidden" value="{$art.user_id}">
+                <input name="art_id" type="hidden" value="{$art.id}">
+                <textarea cols="15" rows="5" name="content" style="width:600px" ></textarea>
+                </div>
+                <div class="form-group">
+                    <button id="commentsl" type="button" class="btn-primary right" style="margin-right: 100px;float:right;">提交</button>
+                </div>
+            </form>
+
+
+            <p id="res" class="text-success"></p>
+
+            <div>
+                {volist name="conmmentsl" id="csl" empty="没有留言"}
+                <p>留言人：{$csl.user_id|getCatname} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 留言日期：{$csl.create_time}</p>
+                <p>{$csl.content}</p>
+                <hr>
+                {/volist}
+
+            </div>
+
         </div>
 
+<script>
+    $('#commentsl').on('click',function () {
+        $.get("{:url('conmmentsl')}",$('#ly').serialize(),function (data) {
+                if(data.status==1){
+                    $('#res').html(data.message);
+                }
+            if(data.status==2){
+                $('#res').html(data.message);
+            }
+        })
+    })
 
+
+</script>
 
     </div>
 <script>
    $(function() {
-
+       var  fuid;
        {empty name="$art.userfav.user_id"} //判断user_id 是否为空
-       var  fuid= null;
+         fuid= null;
        {/empty}
        if (!null==fuid){
            $('#fav').text('已收藏');
