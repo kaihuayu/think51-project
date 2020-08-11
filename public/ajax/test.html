@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<button>显示</button>
+<h2></h2>
+</body>
+<script>
+ var btn =document.getElementsByTagName('button')['0']; //获取第一个按钮
+    btn.onclick=function () {
+        var xhr = new XMLHttpRequest();//创建ajax对象
+        xhr.onreadystatechange =function () {  //设置onreadystatechange的属性，它可以监听请求状态的变化
+            if (xhr.readyState==4 && xhr.status ==200){
+                var h2 = document.getElementsByTagName("h2")[0];
+                h2.innerHTML =xhr.responseText;
+            }
+        }
+        xhr.open('get','test.php',true); //初始化请求
+        xhr.send(null); //无参数
+
+    }
+
+</script>
+</html>
+

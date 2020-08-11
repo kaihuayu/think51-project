@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户登录</title>
+</head>
+<body>
+<div align="center">
+    <form action="check.php.p" method ="post">
+       <p> 用户 &nbsp;&nbsp;<input type="text" name="user" id="user" value=""></p>
+       <p> 密码 &nbsp;&nbsp;<input type="text" name="password" id="password" value=""></p>
+
+        <p id="str"></p>
+
+    </form>
+    <p><input type = "submit" id="submit" value="提交"></p>
+</div>
+<script>
+    var btn = document.getElementById('submit');
+    btn.onclick =function () {
+        var xhr =new XMLHttpRequest(); //创建ajax 对象；
+        //监听
+        xhr.onreadystatechange =function () {
+
+            if (xhr.readyState==4 && xhr.status==200){
+                var str = document.getElementById('str');
+                console.log(xhr.responseText);
+                str.innerHTML=JSON.parse(xhr.responseText)['user'];
+
+
+            }
+            if (xhr.readyState==1 && xhr.status==200){
+
+                console.log("链接中....");
+
+
+            }
+
+        }
+
+        //初始化
+        var user=document.getElementById('user').value;
+        var password =document.getElementById('password').value;
+        var data="user="+user+"&password="+password;//post请求数据 键值对的方式
+        var url ="check.php";
+        xhr.open('post',url,true);
+        //post必须设置请求头
+        xhr.setRequestHeader('content-type',"application/x-www-form-urlencoded");//请求头
+        xhr.send(data);//post参数必须写
+        return false; //禁用按钮提交
+    }
+
+</script>
+</body>
+</html>
